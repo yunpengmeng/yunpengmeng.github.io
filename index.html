@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Yunpeng Meng</title>
+<meta name="description" content="Yunpeng Meng, PhD student in mathematics at Texas A&amp;M University. Hyperbolic geometry, the volume conjecture, quantum invariants and the asymptotics of 6j-symbols.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=Source+Sans+3:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a single reading column (max 62rem). Masthead with name and section links;
+   bio beside a looping SnapPy view of a horosphere;
+   a dated paper list with folding abstracts; contact block. */
+:root{
+  --bg:#f5f6f9;
+  --surface:#ffffff;
+  --fg:#1a2030;
+  --muted:#5a6273;
+  --line:#d7dce6;
+  --accent:#27508f;
+  --accent-ink:#1d3f75;
+  --accent-soft:#e3eaf7;
+  --font-display:"Newsreader",Georgia,"Times New Roman",serif;
+  --font-body:"Source Sans 3","Helvetica Neue",Arial,sans-serif;
+  --font-mono:"IBM Plex Mono",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0f131b; --surface:#161b25; --fg:#e4e8f0; --muted:#98a2b6; --line:#2a3242;
+    --accent:#8db2ff; --accent-ink:#b6ccff; --accent-soft:#1b2740; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0f131b; --surface:#161b25; --fg:#e4e8f0; --muted:#98a2b6; --line:#2a3242;
+  --accent:#8db2ff; --accent-ink:#b6ccff; --accent-soft:#1b2740; color-scheme:dark;
+}
+@media (prefers-reduced-motion: no-preference){ html{ scroll-behavior:smooth } }
+
+*{ box-sizing:border-box }
+body{
+  margin:0; background:var(--bg); color:var(--fg);
+  font-family:var(--font-body); font-size:1.0625rem; line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+.page{
+  max-width:62rem; margin:0 auto;
+  padding-block:1.5rem 3rem;
+  padding-left:max(16px, env(safe-area-inset-left, 0px));
+  padding-right:max(16px, env(safe-area-inset-right, 0px));
+}
+a{ color:var(--accent); text-decoration:none; text-underline-offset:.18em }
+a:hover{ text-decoration:underline }
+a:focus-visible, button:focus-visible, summary:focus-visible{ outline:2px solid var(--accent); outline-offset:3px; border-radius:2px }
+h1,h2,h3{ font-family:var(--font-display); font-weight:500; line-height:1.15; margin:0; text-wrap:balance }
+p{ margin:0 }
+.eyebrow{
+  font-family:var(--font-mono); font-size:.72rem; letter-spacing:.12em; text-transform:uppercase;
+  color:var(--muted);
+}
+
+/* Masthead */
+.masthead{
+  display:flex; flex-wrap:wrap; justify-content:space-between; align-items:flex-end; gap:1rem 2rem;
+  padding-bottom:1.25rem; border-bottom:1px solid var(--line);
+}
+.masthead h1{ font-size:clamp(2.1rem, 5vw, 2.9rem); letter-spacing:-.01em }
+.masthead .role{ color:var(--muted); margin-top:.25rem }
+.masthead nav{ display:flex; flex-wrap:wrap; gap:.25rem 1.25rem; font-size:.95rem }
+.masthead nav a{ color:var(--fg) }
+.masthead nav a:hover{ color:var(--accent) }
+
+/* Sections */
+section{ padding-block:2.75rem; border-bottom:1px solid var(--line) }
+section:last-of-type{ border-bottom:0 }
+.section-head{ display:flex; align-items:baseline; gap:1rem; margin-bottom:1.5rem }
+.section-head h2{ font-size:1.75rem }
+
+/* About: bio beside the disk */
+.about-grid{
+  display:grid; grid-template-columns:minmax(0,1.5fr) minmax(0,1fr); gap:2.5rem; align-items:center;
+}
+.bio{ display:grid; gap:1rem; max-width:40rem }
+.bio-head{ display:flex; gap:1.4rem; align-items:flex-start }
+.bio-text{ display:grid; gap:1rem; min-width:0 }
+.portrait{
+  flex:none; width:11rem; height:auto; aspect-ratio:4/5; object-fit:cover; border-radius:12px;
+  box-shadow:0 1px 2px rgba(20,24,40,.12), 0 10px 28px -12px rgba(20,24,40,.45);
+}
+.bio p{ font-size:1.125rem }
+.keywords{ display:flex; flex-wrap:wrap; gap:.5rem; margin-top:.5rem; padding:0; list-style:none }
+.keywords li{
+  font-size:.85rem; padding:.2rem .65rem; border:1px solid var(--line); border-radius:999px;
+  color:var(--muted); background:var(--surface);
+}
+.hero-media{ margin:0; display:grid; gap:.7rem; justify-items:center }
+.hero-media video{
+  width:100%; max-width:340px; aspect-ratio:1/1; display:block; object-fit:cover;
+  border-radius:14px; background:#1b1418;
+  box-shadow:0 1px 2px rgba(20,24,40,.12), 0 10px 28px -12px rgba(20,24,40,.45);
+}
+.hero-media figcaption{ font-size:.85rem; color:var(--muted); text-align:center; max-width:21rem; line-height:1.45 }
+
+/* Volume conjecture formula under the bio */
+.formula{
+  margin-top:.5rem; padding:1rem 1.15rem;
+  background:var(--surface); border:1px solid var(--line); border-radius:8px;
+  overflow-x:auto; font-size:1rem;
+}
+.formula .note{ font-size:.88rem; color:var(--muted); margin-top:.4rem }
+
+/* Papers */
+.papers{ display:grid; gap:1.75rem; margin:0; padding:0; list-style:none }
+.paper{ display:grid; grid-template-columns:5.5rem minmax(0,1fr); gap:.25rem 1rem; min-width:0 }
+.paper-year{ font-family:var(--font-mono); font-size:.9rem; color:var(--muted); padding-top:.3rem; font-variant-numeric:tabular-nums }
+.paper-body{ display:grid; gap:.35rem; min-width:0 }
+.paper-title{ font-size:1.3rem }
+.paper-title a{ color:var(--fg) }
+.paper-title a:hover{ color:var(--accent) }
+.paper-authors{ font-size:1rem }
+.paper-authors .me{ font-weight:inherit }
+.paper-meta{ font-size:.9rem; color:var(--muted) }
+.paper-meta a{ font-family:var(--font-mono); font-size:.82rem }
+.paper details{ margin-top:.2rem }
+.paper summary{
+  cursor:pointer; font-size:.92rem; color:var(--accent); width:max-content; list-style:none;
+}
+.paper summary::-webkit-details-marker{ display:none }
+.paper summary::before{ content:"+"; display:inline-block; width:1.1em; font-family:var(--font-mono) }
+.paper details[open] summary::before{ content:"\2212" }
+.paper .abstract{
+  margin-top:.6rem; padding:1rem 1.1rem; font-size:.98rem; line-height:1.6;
+  background:var(--surface); border-left:3px solid var(--accent-soft); max-width:46rem;
+}
+
+/* Contact */
+.teaching{ display:grid; gap:.9rem; margin:0; padding:0; list-style:none }
+.teaching li{ display:grid; grid-template-columns:5.5rem minmax(0,1fr); gap:.25rem 1rem }
+.teaching .term{ font-family:var(--font-mono); font-size:.9rem; color:var(--muted); padding-top:.15rem; font-variant-numeric:tabular-nums }
+.teaching .course{ font-weight:600 }
+.teaching .instructor{ color:var(--muted); font-size:.95rem }
+
+.contact{ display:grid; gap:.9rem; max-width:40rem }
+.contact-row{ display:flex; flex-wrap:wrap; align-items:center; gap:.5rem 1rem }
+.contact-row .label{ width:5.5rem; flex:none; font-family:var(--font-mono); font-size:.75rem; letter-spacing:.1em; text-transform:uppercase; color:var(--muted) }
+.contact-row code{ font-family:var(--font-mono); font-size:.95rem; user-select:all }
+.contact-row address{ font-style:normal; flex:1 1 0; min-width:12rem }
+button.copy{
+  font:inherit; font-size:.8rem; padding:.15rem .6rem; border-radius:4px; cursor:pointer;
+  border:1px solid var(--line); background:var(--surface); color:var(--fg);
+}
+button.copy:hover{ border-color:var(--accent); color:var(--accent) }
+.dl-status{ font-size:.85rem; color:var(--muted); margin-left:.5rem }
+
+.sunset{ margin:1.5rem 0 0 }
+.sunset img{
+  display:block; width:100%; height:auto; border-radius:14px;
+  box-shadow:0 1px 2px rgba(20,24,40,.12), 0 10px 28px -12px rgba(20,24,40,.45);
+}
+
+footer{ padding-top:2rem; font-size:.85rem; color:var(--muted); display:flex; flex-wrap:wrap; gap:.5rem 1.5rem }
+
+@media (max-width: 720px){
+  .about-grid{ grid-template-columns:minmax(0,1fr) }
+  .hero-media{ order:-1 }
+  .bio-head{ flex-direction:column }
+  .portrait{ width:9.5rem }
+  .sunset img{ aspect-ratio:2.2/1; object-fit:cover; object-position:50% 62% }
+  .formula{ font-size:.8rem; padding:.85rem .8rem }
+  .formula .note{ font-size:.85rem }
+  .paper, .teaching li{ grid-template-columns:minmax(0,1fr) }
+  .paper-year{ padding-top:0 }
+  section{ padding-block:2.25rem }
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+<header class="masthead">
+  <div>
+    <h1>Yunpeng Meng</h1>
+    <p class="role">PhD student in Mathematics, Texas A&amp;M University</p>
+  </div>
+  <nav aria-label="Sections">
+    <a href="#about">About</a>
+    <a href="#papers">Papers</a>
+    <a href="#teaching">Teaching</a>
+    <a class="pdf-link" href="cv/Yunpeng_Meng_CV.pdf" target="_blank" rel="noopener">CV</a>
+    <a href="#contact">Contact</a>
+  </nav>
+</header>
+
+<section id="about">
+  <div class="about-grid">
+    <div class="bio">
+      <div class="bio-head">
+        <img class="portrait" src="media/portrait.jpg" width="800" height="1000" alt="Yunpeng Meng" decoding="async">
+        <div class="bio-text">
+          <p>I am a PhD student in the <a href="https://www.math.tamu.edu/">Department of Mathematics</a> at Texas A&amp;M University, advised by <a href="https://people.tamu.edu/~yangtian/">Tian Yang</a>. My research interests are in hyperbolic geometry and the volume conjecture.</p>
+          <ul class="keywords" aria-label="Keywords">
+            <li>hyperbolic geometry</li>
+            <li>volume conjecture</li>
+            <li>quantum invariants</li>
+            <li>ideal triangulations</li>
+            <li>6j-symbols</li>
+            <li>resurgence</li>
+          </ul>
+        </div>
+      </div>
+      <div class="formula">
+        \[
+          \lim_{r\to\infty}\frac{2\pi}{r}\,\log \mathrm{TV}_r\!\left(M;\,e^{\frac{2\pi i}{r}}\right)=\mathrm{Vol}(M),\quad r \text{ odd},
+        \]
+        <p class="note">The Chen&ndash;Yang volume conjecture for a hyperbolic 3-manifold \(M\), stated for the Turaev&ndash;Viro invariants \(\mathrm{TV}_r\).</p>
+      </div>
+    </div>
+    <figure class="hero-media">
+      <video id="horo" autoplay muted loop playsinline preload="auto" poster="media/horosphere-poster.jpg"
+        aria-label="Inside view of the figure-eight knot complement: tubes around a core geodesic round out into horospheres">
+        <source src="media/horosphere-loop.mp4" type="video/mp4">
+      </video>
+      <figcaption>The figure-eight knot complement seen from inside, ray-traced in SnapPy. As \(u\to0\), the Dehn fillings \((5,1)/u\) approach the complete structure and the Margulis tube around the core geodesic rounds out into a horosphere.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section id="papers">
+  <div class="section-head"><h2>Papers and preprints</h2></div>
+  <ol class="papers" reversed>
+    <li class="paper">
+      <div class="paper-year">2026</div>
+      <div class="paper-body">
+        <h3 class="paper-title"><a class="pdf-link" href="papers/Meng-Wu-Yang-Yang-FSL-big-volume.pdf" target="_blank" rel="noopener">On the volume conjectures for Dehn-filled 3-manifolds along fundamental shadow link complements with big volume</a></h3>
+        <p class="paper-authors"><span class="me">Yunpeng Meng</span>, Baojun Wu, Tian Yang, Yuxuan Yang</p>
+        <!-- Once the arXiv identifier is assigned, replace the PDF link below with https://arxiv.org/abs/ID -->
+        <p class="paper-meta"><a class="pdf-link" href="papers/Meng-Wu-Yang-Yang-FSL-big-volume.pdf" target="_blank" rel="noopener">PDF</a> &middot; math.GT &middot; preprint, submitted to arXiv October 2026 &middot; 62 pages</p>
+        <details>
+          <summary>Abstract</summary>
+          <p class="abstract">We prove the Volume Conjecture and the Asymptotic Expansion Conjecture for closed oriented hyperbolic 3-manifolds obtained by integral Dehn-fillings along a fundamental shadow link complement, provided that their volumes are sufficiently close to that of the complement. More generally, we show that the conjectured asymptotic expansions hold for pairs obtained by change-of-pair operations on a fundamental shadow link complement whenever the volume of the corresponding hyperbolic cone manifold is sufficiently close to that of the complement. A key ingredient in the proof is the introduction of extended quantum \(6j\)-symbols and a Weak Reflection Symmetry satisfied by them. The Weak Reflection Symmetry is established by relating the extended quantum \(6j\)-symbols to the \(b\)-\(6j\) symbols through a real Gevrey-1 estimate and a truncated Borel&ndash;Laplace transform.</p>
+        </details>
+      </div>
+    </li>
+    <li class="paper">
+      <div class="paper-year">2026</div>
+      <div class="paper-body">
+        <h3 class="paper-title"><a href="https://arxiv.org/abs/2606.03653">Asymptotics of complex \(b\)-\(6j\) symbols</a></h3>
+        <p class="paper-authors"><span class="me">Yunpeng Meng</span>, Tian Yang</p>
+        <p class="paper-meta"><a href="https://arxiv.org/abs/2606.03653">arXiv:2606.03653</a> &middot; math-ph, hep-th, math.GT &middot; 52 pages, 13 figures</p>
+        <details>
+          <summary>Abstract</summary>
+          <p class="abstract">We study the \(b\)-\(6j\) symbols, an analytic extension of the \(6j\)-symbols for the principal series of the modular double of \(\mathrm U_q\mathfrak{sl}(2;\mathbb R)\), with complex index \(b\), referred to as the <em>complex \(b\)-\(6j\) symbols</em>. Then we relate their asymptotics, when the six parameters scale according to the dihedral angles of a hyperideal hyperbolic tetrahedron, to the volume and the determinant of the Gram matrix of the tetrahedron. In the case \(\arg b=\pm\frac{\pi}{4}\), we believe that this work is closely related to the complex Liouville string.</p>
+        </details>
+      </div>
+    </li>
+    <li class="paper">
+      <div class="paper-year">2025</div>
+      <div class="paper-body">
+        <h3 class="paper-title"><a href="https://arxiv.org/abs/2503.07421">Hyperbolization and geometric decomposition of a class of 3-manifolds</a></h3>
+        <p class="paper-authors">Ke Feng, Huabin Ge, <span class="me">Yunpeng Meng</span></p>
+        <p class="paper-meta"><a href="https://arxiv.org/abs/2503.07421">arXiv:2503.07421</a> &middot; math.GT &middot; 33 pages</p>
+        <details>
+          <summary>Abstract</summary>
+          <p class="abstract">Thurston's triangulation conjecture asserts that every hyperbolic 3-manifold admits a geometric triangulation into hyper-ideal hyperbolic tetrahedra. So far, this conjecture had only been proven for a few special 3-manifolds. In this article, we confirm this conjecture for a class of 3-manifolds. To be precise, let \(M\) be an oriented compact 3-manifold with boundary, no component of which is a 2-sphere, and \(\mathcal T\) an ideal triangulation of \(M\). If \(\mathcal T\) satisfies the properly gluing condition, and the valence is at least 6 at each ideal edge and 11 at each hyper-ideal edge, then \(M\) admits a unique complete hyperbolic metric with totally geodesic boundary, so that \(\mathcal T\) is isotopic to a geometric ideal triangulation of \(M\). We use analytical tools such as combinatorial Ricci flow (CRF) to derive the conclusions. There are intrinsic difficulties in dealing with CRF. First, the CRF may collapse in finite time; second, most smooth curvature flow methods are no longer applicable since there are no local coordinates in \(\mathcal T\); and third, the evolution of CRF is affected by certain combinatorial obstacles in addition to topology. To this end, we introduce the ideas of &ldquo;extending CRF&rdquo;, &ldquo;tetrahedral comparison principles&rdquo; and &ldquo;controlling CRF with edge valence&rdquo; to solve these difficulties. In addition, the presence of torus boundary adds substantial difficulties, which we solve by introducing the properly gluing conditions on \(\mathcal T\) and reducing the extended CRF to a flow that is easier to handle.</p>
+        </details>
+      </div>
+    </li>
+    <li class="paper">
+      <div class="paper-year">2024</div>
+      <div class="paper-body">
+        <h3 class="paper-title"><a href="https://arxiv.org/abs/2410.20489">On the volume conjecture for hyperbolic Dehn-filled 3-manifolds along the twist knots</a></h3>
+        <p class="paper-authors">Huabin Ge, <span class="me">Yunpeng Meng</span>, Chuwen Wang, Yuxuan Yang</p>
+        <p class="paper-meta"><a href="https://arxiv.org/abs/2410.20489">arXiv:2410.20489</a> &middot; math.GT &middot; 58 pages, 34 figures</p>
+        <details>
+          <summary>Abstract</summary>
+          <p class="abstract">For a twist knot \(\mathcal K_{p'}\), let \(M\) be the closed 3-manifold obtained by doing \((p,q)\) Dehn filling along \(\mathcal K_{p'}\). In this article, we prove that Chen&ndash;Yang's volume conjecture holds for \(M\) for sufficiently large \(|p|+|q|\) and \(|p'|\). In the proof, we construct a new ideal triangulation of the Whitehead link complement which is different from Thurston's triangulation. Our triangulation has led to some new discoveries regarding symmetry, including insights into the &ldquo;sister manifolds&rdquo; introduced by Hodgson, Meyerhoff and Weeks.</p>
+        </details>
+      </div>
+    </li>
+    <!-- Template for a new entry:
+    <li class="paper">
+      <div class="paper-year">YEAR</div>
+      <div class="paper-body">
+        <h3 class="paper-title"><a href="https://arxiv.org/abs/ID">TITLE</a></h3>
+        <p class="paper-authors">AUTHORS, <span class="me">Yunpeng Meng</span></p>
+        <p class="paper-meta"><a href="https://arxiv.org/abs/ID">arXiv:ID</a> &middot; math.GT</p>
+        <details><summary>Abstract</summary><p class="abstract">ABSTRACT</p></details>
+      </div>
+    </li>
+    -->
+  </ol>
+</section>
+
+<section id="teaching">
+  <div class="section-head"><h2>Teaching</h2></div>
+  <ul class="teaching">
+    <li>
+      <span class="term">Fall 2026</span>
+      <span>Grader, <span class="course">MATH 415H <em>Modern Algebra I</em></span> (Honors), Texas A&amp;M University<br>
+        <span class="instructor">Instructor: Frank Sottile</span></span>
+    </li>
+  </ul>
+</section>
+
+<section id="contact">
+  <div class="section-head"><h2>Contact</h2></div>
+  <div class="contact">
+    <div class="contact-row">
+      <span class="label">Email</span>
+      <code id="email">meng.yun@tamu.edu</code>
+      <button class="copy" type="button" id="copy-email" aria-label="Copy email address">Copy</button>
+      <span id="copy-status" aria-live="polite"></span>
+    </div>
+    <div class="contact-row">
+      <span class="label">Address</span>
+      <address>Department of Mathematics, Texas A&amp;M University, College Station, TX 77843, USA</address>
+    </div>
+    <div class="contact-row">
+      <span class="label">arXiv</span>
+      <a href="https://arxiv.org/search/?searchtype=author&query=Meng%2C+Yunpeng">Papers by Yunpeng Meng</a>
+      <!-- Add more links here, e.g. Google Scholar, ORCID, GitHub. -->
+    </div>
+    <div class="contact-row">
+      <span class="label">CV</span>
+      <a class="pdf-link" href="cv/Yunpeng_Meng_CV.pdf" target="_blank" rel="noopener">Curriculum vitae (PDF)</a>
+    </div>
+  </div>
+</section>
+
+<figure class="sunset">
+  <img src="media/sunset-strip.jpg" alt="Sunset over a lake, with the far shore in silhouette" width="1440" height="389" loading="lazy" decoding="async">
+</figure>
+
+<footer>
+  <span>Last updated October 2026</span>
+</footer>
+
+</div>
+
+<script>
+window.MathJax = {
+  tex: { inlineMath: [['\\(', '\\)']], displayMath: [['\\[', '\\]']] },
+  svg: { fontCache: 'global' },
+  options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'] }
+};
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-svg.js" async></script>
+<script>
+(function () {
+  /* Respect reduced-motion settings: show the still poster with controls instead of autoplaying. */
+  var v = document.getElementById('horo');
+  if (!v || !window.matchMedia) return;
+  var mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+  function apply() {
+    if (mq.matches) { v.removeAttribute('autoplay'); v.pause(); v.controls = true; }
+    else { v.controls = false; var p = v.play(); if (p && p.catch) p.catch(function () {}); }
+  }
+  apply();
+  if (mq.addEventListener) mq.addEventListener('change', apply); else if (mq.addListener) mq.addListener(apply);
+})();
+
+(function () {
+  /* Inside the claude.ai viewer the page runs in a sandboxed frame that cannot display a PDF,
+     so offer the file as a download there. Elsewhere the links simply open the PDF in a new tab. */
+  var links = document.querySelectorAll('a.pdf-link');
+  if (!links.length || !window.claude || typeof window.claude.use !== 'function') return;
+  window.claude.use('downloads').then(function (dl) {
+    if (!dl) return;
+    function note(a, msg) {
+      var span = a.nextElementSibling;
+      if (!span || !span.classList.contains('dl-status')) {
+        span = document.createElement('span'); span.className = 'dl-status'; span.setAttribute('aria-live', 'polite');
+        a.insertAdjacentElement('afterend', span);
+      }
+      span.textContent = msg;
+      if (msg) setTimeout(function () { span.textContent = ''; }, 3000);
+    }
+    links.forEach(function (a) {
+      a.addEventListener('click', function (ev) {
+        ev.preventDefault();
+        var href = a.getAttribute('href');
+        var name = href.split('/').pop();
+        note(a, 'Preparing\u2026');
+        fetch(href).then(function (r) { if (!r.ok) throw new Error('fetch failed'); return r.blob(); })
+          .then(function (blob) { return dl.save({ filename: name, data: blob }); })
+          .then(function () { note(a, 'Saved'); })
+          .catch(function (e) { note(a, e && e.code === 'declined' ? '' : 'Download unavailable here'); });
+      });
+    });
+  }).catch(function () {});
+})();
+
+(function () {
+  var btn = document.getElementById('copy-email');
+  var code = document.getElementById('email');
+  var status = document.getElementById('copy-status');
+  if (!btn || !code) return;
+  function selectText() {
+    try {
+      var range = document.createRange(); range.selectNodeContents(code);
+      var sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(range);
+    } catch (e) {}
+  }
+  btn.addEventListener('click', function () {
+    var text = code.textContent.trim();
+    function done(msg) { if (status) { status.textContent = msg; setTimeout(function () { status.textContent = ''; }, 2000); } }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function () { done('Copied'); },
+        function () { selectText(); done('Select and copy'); });
+    } else { selectText(); done('Select and copy'); }
+  });
+})();
+</script>
+</body>
+</html>

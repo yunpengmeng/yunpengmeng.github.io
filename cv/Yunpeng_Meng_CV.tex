@@ -1,0 +1,96 @@
+% Yunpeng Meng -- Curriculum Vitae
+% Build: latexmk -pdf Yunpeng_Meng_CV.tex   (or run pdflatex twice)
+% Red [ ... ] markers come from \todo{...}: replace each with the real fact, then delete the macro call.
+\documentclass[11pt]{article}
+\usepackage[letterpaper,top=0.7in,bottom=0.8in,left=0.95in,right=0.95in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{libertine}
+\IfFileExists{newtxmath.sty}{\usepackage[libertine]{newtxmath}}{}
+\usepackage[final]{microtype}
+\usepackage{xcolor}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{tabularx}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\definecolor{accent}{HTML}{27508F}   % same blue as the homepage
+\definecolor{muted}{HTML}{5A6273}
+\definecolor{todo}{HTML}{B3362F}
+\usepackage[colorlinks=true,urlcolor=accent,linkcolor=accent,
+  pdfauthor={Yunpeng Meng},pdftitle={Yunpeng Meng: Curriculum Vitae}]{hyperref}
+
+\newcommand{\todo}[1]{\textcolor{todo}{\textsf{[#1]}}}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt}
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\fancyfoot[L]{\footnotesize\color{muted}Yunpeng Meng\enspace\textperiodcentered\enspace Curriculum Vitae}
+\fancyfoot[R]{\footnotesize\color{muted}Updated October 2026\enspace\textperiodcentered\enspace Page \thepage\ of \pageref*{LastPage}}
+
+\titleformat{\section}{\color{accent}\large\scshape}{}{0pt}{}[{\color{accent!35}\titlerule[0.6pt]}]
+\titlespacing*{\section}{0pt}{1.1em}{0.55em}
+
+% \cventry{left column: dates or label}{right column: details, lines separated by \newline}
+\newcommand{\cventry}[2]{%
+  \begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{1.3in}@{}X@{}}
+    \textcolor{muted}{#1} & #2
+  \end{tabularx}\par\vspace{0.4em}}
+
+\begin{document}
+
+\begin{minipage}[b]{0.56\linewidth}
+  {\fontsize{25}{29}\selectfont Yunpeng Meng}\\[4pt]
+  {\large\color{muted}Curriculum Vitae}
+\end{minipage}\hfill
+\begin{minipage}[b]{0.42\linewidth}\raggedleft\small
+  Department of Mathematics\\
+  Texas A\&M University\\
+  College Station, TX 77843, USA\\
+  \href{mailto:meng.yun@tamu.edu}{meng.yun@tamu.edu}
+\end{minipage}
+
+\vspace{6pt}
+{\color{accent}\rule{\linewidth}{0.9pt}}
+
+\section{Education}
+\cventry{Ph.D.}{\textbf{Texas A\&M University}, College Station, TX, USA\newline
+  Mathematics, in progress\newline
+  Advisor: Tian Yang}
+\cventry{M.S.}{\textbf{Capital Normal University}, Beijing, China\newline
+  Mathematics}
+\cventry{B.S.}{\textbf{Tiangong University}, Tianjin, China\newline
+  Mathematics}
+
+\section{Research Interests}
+Hyperbolic geometry and low-dimensional topology; the volume conjecture and quantum invariants of 3-manifolds;
+geometric triangulations and combinatorial Ricci flow; asymptotics of quantum $6j$-symbols;
+resurgence and Borel--Laplace resummation.
+
+\section{Papers and Preprints}
+\begin{enumerate}[leftmargin=2.4em,labelsep=0.7em,itemsep=0.55em,topsep=0pt,parsep=0pt]
+  \item[{[4]}] \textit{On the volume conjectures for Dehn-filled 3-manifolds along fundamental shadow link
+    complements with big volume}, with Baojun Wu, Tian Yang, and Yuxuan Yang.\newline
+    Preprint, 2026.
+  \item[{[3]}] \textit{Asymptotics of complex $b$-$6j$ symbols}, with Tian Yang.\newline
+    \href{https://arxiv.org/abs/2606.03653}{arXiv:2606.03653}, 2026.
+  \item[{[2]}] \textit{Hyperbolization and geometric decomposition of a class of 3-manifolds},
+    with Ke Feng and Huabin Ge.\newline
+    \href{https://arxiv.org/abs/2503.07421}{arXiv:2503.07421}, 2025.
+  \item[{[1]}] \textit{On the volume conjecture for hyperbolic Dehn-filled 3-manifolds along the twist knots},
+    with Huabin Ge, Chuwen Wang, and Yuxuan Yang.\newline
+    \href{https://arxiv.org/abs/2410.20489}{arXiv:2410.20489}, 2024.
+\end{enumerate}
+
+\section{Teaching}
+\cventry{Fall 2026}{Grader, MATH 415H \textit{Modern Algebra I} (Honors), Texas A\&M University\newline
+  Instructor: Frank Sottile}
+
+\section{References}
+\cventry{}{\textbf{Tian Yang}, Ph.D.\ advisor\newline
+  Associate Professor, Department of Mathematics\newline
+  Texas A\&M University, College Station, TX 77843, USA}
+
+\end{document}
